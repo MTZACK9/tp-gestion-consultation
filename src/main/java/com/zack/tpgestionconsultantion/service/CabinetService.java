@@ -70,7 +70,11 @@ public class CabinetService implements ICabinetService {
 
     @Override
     public void addConsultation(Consultation consultation) {
-
+        try {
+            consultationDao.create(consultation);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
