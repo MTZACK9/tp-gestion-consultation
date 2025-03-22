@@ -6,7 +6,6 @@ import com.zack.tpgestionconsultantion.entities.Consultation;
 import com.zack.tpgestionconsultantion.entities.Patient;
 import com.zack.tpgestionconsultantion.service.CabinetService;
 import com.zack.tpgestionconsultantion.service.ICabinetService;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
