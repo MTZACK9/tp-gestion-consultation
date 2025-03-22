@@ -78,24 +78,40 @@ public class PatientController implements Initializable {
 
         cabinetService.addPatient(patient);
         loadPatients();
+        clearFields();
+
     }
 
     public void deletePatient() {
         Patient patient = tablePatients.getSelectionModel().getSelectedItem();
-        cabinetService.deletePatient(patient);
-        loadPatients();
-        labelSuccess.setText("Le patient a été bien supprimé");
+        if(patient != null) {
+            cabinetService.deletePatient(patient);
+            loadPatients();
+            labelSuccess.setText("Le patient a été bien supprimé");
+            clearFields();
+        }
+
     }
 
     public void updatePatient() {
-        selectedPatient.setNom(textFieldNom.getText());
-        selectedPatient.setPrenom(textFieldPrenom.getText());
-        selectedPatient.setTel(textFieldTel.getText());
-        cabinetService.updatePatient(selectedPatient);
-        loadPatients();
+        if (selectedPatient != null) {
+            selectedPatient.setNom(textFieldNom.getText());
+            selectedPatient.setPrenom(textFieldPrenom.getText());
+            selectedPatient.setTel(textFieldTel.getText());
+            cabinetService.updatePatient(selectedPatient);
+            loadPatients();
+            clearFields();
+        }
+
     }
 
     private void loadPatients() {
         patients.setAll(cabinetService.getAllPatient());
+    }
+    private void clearFields() {
+        textFieldNom.clear();
+        textFieldPrenom.clear();
+        textFieldTel.clear();
+
     }
 }
