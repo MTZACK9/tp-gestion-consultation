@@ -1,4 +1,4 @@
-# Hospital Management System
+# DEVOIR GESTION CONSULTATION
 
 Une application JavaFX pour la gestion des patients et des consultations médicales.
 
