@@ -42,7 +42,7 @@ public class PatientController implements Initializable {
     private Label labelSuccess;
     private ICabinetService cabinetService;
     private final ObservableList<Patient> patients = FXCollections.observableArrayList();
-
+    private Patient selectedPatient;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cabinetService = new CabinetService(new PatientDao(), new ConsultationDao());
@@ -52,6 +52,22 @@ public class PatientController implements Initializable {
         columnTel.setCellValueFactory(new PropertyValueFactory<>("tel"));
         tablePatients.setItems(patients);
         loadPatients();
+        textFieldSearch.textProperty().addListener(((observableValue, oldValue, newValue) -> {
+            try {
+
+                patients.setAll(cabinetService.searchPatientsByQuery(newValue));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }));
+        tablePatients.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
+            if(newValue != null) {
+                textFieldNom.setText(newValue.getNom());
+                textFieldPrenom.setText(newValue.getPrenom());
+                textFieldTel.setText(newValue.getTel());
+                selectedPatient = newValue;
+            }
+        });
     }
 
     public void addPatient() {
@@ -69,6 +85,14 @@ public class PatientController implements Initializable {
         cabinetService.deletePatient(patient);
         loadPatients();
         labelSuccess.setText("Le patient a été bien supprimé");
+    }
+
+    public void updatePatient() {
+        selectedPatient.setNom(textFieldNom.getText());
+        selectedPatient.setPrenom(textFieldPrenom.getText());
+        selectedPatient.setTel(textFieldTel.getText());
+        cabinetService.updatePatient(selectedPatient);
+        loadPatients();
     }
 
     private void loadPatients() {

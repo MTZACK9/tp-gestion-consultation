@@ -1,5 +1,6 @@
 package com.zack.tpgestionconsultantion.service;
 
+import com.zack.tpgestionconsultantion.dao.ConsultationDao;
 import com.zack.tpgestionconsultantion.dao.IConsultationDao;
 import com.zack.tpgestionconsultantion.dao.IPatientDao;
 import com.zack.tpgestionconsultantion.entities.Consultation;
@@ -69,6 +70,11 @@ public class CabinetService implements ICabinetService {
     }
 
     @Override
+    public List<Patient> searchPatientsByQuery(String query) throws SQLException {
+        return patientDao.searchByQuery(query);
+    }
+
+    @Override
     public void addConsultation(Consultation consultation) {
         try {
             consultationDao.create(consultation);
@@ -84,12 +90,22 @@ public class CabinetService implements ICabinetService {
 
     @Override
     public void deleteConsultation(Consultation consultation) {
-
+        try {
+            consultationDao.delete(consultation);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<Consultation> getAllConsultation() {
-        return List.of();
+        List<Consultation> consultations;
+        try {
+            consultations = consultationDao.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return consultations;
     }
 
     @Override
